@@ -4,8 +4,8 @@ AAAI 2019 LRA-E Model
 # We have provided scripts for training LRA-E on mnist and fmnist.
 
 # How to run
-python mnist/mnist.py runs 4 layer MLP on mnist
-python fmnist/fmnist.py runs 4 layer MLP on mnist.
+* python mnist/mnist.py runs 4 layer MLP on mnist
+* python fmnist/fmnist.py runs 4 layer MLP on mnist.
 
 # Structure of code
 We have structured code keeping following things in mind
