@@ -5,7 +5,7 @@ AAAI 2019 LRA-E Model
 
 # How to run
 * python mnist/mnist.py runs 4 layer MLP on mnist
-* python fmnist/fmnist.py runs 4 layer MLP on mnist.
+* python fmnist/fmnist.py runs 4 layer MLP on fashion-mnist.
 
 # Structure of code
 We have structured code keeping following things in mind
@@ -20,4 +20,7 @@ Class MLP creates all the necesssary function
 * compute_output:- gives you set of post and preactivations for the model.
 * backward :- will help you calculating backpropogation gradients and one step of SGD[Can be replaced with any TF optimizer].
 * compute_lra_update :- Will compute LRA_updates 
+
+
+We will be updating this repo to add more examples and also optimal training rules for LRA.
 
