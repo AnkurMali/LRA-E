@@ -18,8 +18,8 @@ Class MLP creates all the necesssary function
 * Declare all the Weight and biases variables for the model.[How deeper you wish to go]
 * Forward :- Function does the forward pass for the model on cpu or gpu.
 * compute_output:- gives you set of post and preactivations for the model.
-* backward :- will help you calculating backpropogation gradients and one step of SGD[Can be replaced with any TF optimizer].
-* compute_lra_update :- Will compute LRA_updates 
+* backward :- will help you calculating backpropagation (backprop) gradients and one step of SGD [Can be replaced with any TF optimizer].
+* compute_lra_update :- Will compute LRA_updates (instead of backprop)
 
 
 We will be updating this repo to add more examples and also optimal training rules for LRA.
