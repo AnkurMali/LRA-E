@@ -16,9 +16,9 @@ We have structured code keeping following things in mind
 
 Class MLP creates all the necesssary function
 * Declare all the Weight and biases variables for the model.[How deeper you wish to go]
-* Forward :- Function does the forward pass for the model on cpu or gpu.
+* forward :- Function does the forward pass for the model on cpu or gpu.
 * compute_output:- gives you set of post and preactivations for the model.
-* backward :- will help you calculating backpropagation (backprop) gradients and one step of SGD [Can be replaced with any TF optimizer].
+* backward :- will help you calculating backpropagation (backprop) gradients and one step of SGD [Note: Can be replaced with any TF optimizer].
 * compute_lra_update :- Will compute LRA_updates (instead of backprop)
 
 
