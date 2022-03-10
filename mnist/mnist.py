@@ -49,15 +49,15 @@ class MLP(object):
         # Initialize weights between hidden layer and output layer
         self.W2 = tf.Variable(tf.random.normal([self.size_hidden, self.size_hidden],stddev=0.1),name="W2")
         # Initialize biases for output layer
-        self.b2 = tf.Variable(tf.random.normal([1, self.size_hidden]),name="b2")
+        self.b2 = tf.Variable(tf.zeros([1, self.size_hidden]),name="b2")
         
         self.W3 = tf.Variable(tf.random.normal([self.size_hidden, self.size_hidden],stddev=0.1),name="W3")
         # Initialize biases for output layer
-        self.b3 = tf.Variable(tf.random.normal([1, self.size_hidden]),name="b3")
+        self.b3 = tf.Variable(tf.zeros([1, self.size_hidden]),name="b3")
         
         self.W4 = tf.Variable(tf.random.normal([self.size_hidden, self.size_output],stddev=0.1),name="W4")
         # Initialize biases for output layer
-        self.b4 = tf.Variable(tf.random.normal([1, self.size_output]),name="b4")
+        self.b4 = tf.Variable(tf.zeros([1, self.size_output]),name="b4")
         
         self.E2 = tf.Variable(tf.random.normal([self.size_hidden, self.size_hidden],stddev=1.0),name="E2")
         self.E3 = tf.Variable(tf.random.normal([self.size_hidden, self.size_hidden],stddev=1.0),name="E3")
@@ -95,7 +95,7 @@ class MLP(object):
         '''
         y_true_tf = tf.cast(tf.reshape(y_true, (-1, self.size_output)), dtype=tf.float32)
         y_pred_tf = tf.cast(y_pred, dtype=tf.float32)
-        return tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=y_pred_tf, labels=y_true_tf))
+        return tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y_pred_tf, labels=y_true_tf))
         
     ##BP backward pass
     def backward(self, X_train, y_train):
@@ -204,6 +204,7 @@ class MLP(object):
         
 
 def accuracy_function(yhat,true_y):
+  yhat = tf.nn.softmax(yhat)
   correct_prediction = tf.equal(tf.argmax(yhat, 1), tf.argmax(true_y, 1))
   accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
   return accuracy
@@ -222,11 +223,13 @@ for epoch in range(num_epochs):
            .shuffle(buffer_size=1000)\
            .batch(batch_size=minibatch_size)
         loss_total = tf.Variable(0, dtype=tf.float32)
+	epoch_k = 0.0
         for inputs, outputs in train_ds:
             preds = mlp_on_cpu.forward(inputs)
             loss_total = loss_total + mlp_on_cpu.loss(preds, outputs)
+	    epoch_k+=1
             mlp_on_cpu.compute_lra_updates(inputs, outputs)
-        print('Number of Epoch = {} - loss:= {:.4f}'.format(epoch + 1, loss_total.numpy() / num_train))
+        print('Number of Epoch = {} - loss:= {:.4f}'.format(epoch + 1, loss_total.numpy() / epoch_k))
         preds = mlp_on_cpu.compute_output(data.train.images)
         accuracy_train = accuracy_function(preds,data.train.labels)
         accuracy_train = accuracy_train * 100
