@@ -25,3 +25,19 @@ Class MLP creates all the necessary function
 
 We will update this repo to add more examples and optimal training rules for LRA.
 
+# Citation
+
+If you use or adapt (portions of) this code/algorithm in any form in your project(s), or
+find the LRA-E algorithm helpful in your own work; please cite this code's source paper:
+
+```bibtex
+@inproceedings{ororbia2019biologically,
+  title={Biologically motivated algorithms for propagating local target representations},
+  author={Ororbia, Alexander G and Mali, Ankur},
+  booktitle={Proceedings of the aaai conference on artificial intelligence},
+  volume={33},
+  number={01},
+  pages={4651--4658},
+  year={2019}
+}
+```
