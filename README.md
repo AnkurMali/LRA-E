@@ -2,7 +2,7 @@
 This code reproduces the proposed AAAI 2019 local representation alignment (LRA-E) model for training deep neural networks.
 Requires:- Tensorflow >=2.0, Python >=3.5, numpy
 
-# We have provided scripts for training LRA-E on mnist and fmnist.
+# We have provided scripts for training LRA-E on mnist and fashion mnist (fmnist).
 
 # How to run
 * python mnist/mnist.py runs 4 layer MLP on mnist
