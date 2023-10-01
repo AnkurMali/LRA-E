@@ -1,5 +1,5 @@
-# LRA-E
-AAAI 2019 LRA-E Model
+# Brain-Inspired Credit Assignment: Local Representation Alignment (LRA-E)
+This code reproduces the proposed AAAI 2019 local representation alignment (LRA-E) model for training deep neural networks.
 Requires:- Tensorflow >=2.0, Python >=3.5, numpy
 
 # We have provided scripts for training LRA-E on mnist and fmnist.
