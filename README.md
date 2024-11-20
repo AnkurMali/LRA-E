@@ -1,12 +1,16 @@
 # Brain-Inspired Credit Assignment: Local Representation Alignment (LRA-E)
 This code reproduces the proposed AAAI 2019 local representation alignment (LRA-E) model for training deep neural networks.
 Requires:- Tensorflow >=2.0, Python >=3.5, numpy
+# Update
+Now, the code works with newer version of PyTorch and Newer TF
 
 # We have provided scripts for training LRA-E on mnist and fashion mnist (fmnist).
 
 # How to run
-* python mnist/mnist.py runs 4 layer MLP on mnist
+* python mnist/mnist.py runs 4 layer MLP on mnist (Updated code can work with pytorch and Tensorflow for any layers)
 * python fmnist/fmnist.py runs 4 layer MLP on fashion-mnist.
+* python mnist/mnist_newTF.py (supports new Tensorflow and is more modular to run across shallow and deeper layers). Similarly fmnist/fmnist_newTF.py runs fashion_mnist
+* python mnist/mnist_torch.py and fmnist/fmnist_torch.py supports pytorch 
 
 # Structure of code
 We have structured code keeping the following things in mind
