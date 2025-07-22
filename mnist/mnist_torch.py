@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.nn.init as init
 import torch.nn.functional as F
 from torch.optim import AdamW
 from torchvision import datasets, transforms
@@ -41,10 +42,12 @@ class MLP(nn.Module):
         
         for i in range(len(layer_sizes) - 1):
             layer = nn.Linear(layer_sizes[i], layer_sizes[i + 1], bias=False).to(self.device)
+            init.normal_(layer.weight, mean=0.0, std=0.1)
             self.weights.append(layer)
             if i > 0:
                 # Error matrix for LRA update
                 error_layer = nn.Linear(layer_sizes[i + 1], layer_sizes[i], bias=False).to(self.device)
+                init.normal_(error_layer.weight, mean=0.0, std=0.1)
                 self.E.append(error_layer) 
 
         # Move model to the specified device
@@ -207,22 +210,29 @@ for epoch in range(num_epochs):
 
     for batch in train_loader:
         x_train, y_train = batch
-        y_train_onehot = nn.functional.one_hot(y_train, num_classes=10).float()
+        y_train_onehot = F.one_hot(y_train, num_classes=10).float()
 
-        logits = model(x_train)
-        y_train = y_train.to(logits.device)
-        loss = criterion(logits, y_train)
-        epoch_loss += loss.item()
-
-        optimizer.zero_grad()
+        # Step 1: LRA update
         model.compute_lra_updates(x_train, y_train_onehot, optimizer)
-        
-        predictions = torch.argmax(logits, dim=1)
-        correct_train += (predictions == y_train).sum().item()
-        total_train += y_train.size(0)
 
+        # Step 2: Evaluate after update
+        with torch.no_grad():
+            logits = model(x_train)
+            y_train = y_train.to(logits.device)
+            loss = criterion(logits, y_train)
+
+            # Accumulate total loss (sum over all samples)
+            epoch_loss += loss.item() * x_train.size(0)
+
+            predictions = torch.argmax(logits, dim=1)
+            correct_train += (predictions == y_train).sum().item()
+            total_train += y_train.size(0)
+
+    # Final training metrics
+    epoch_loss /= total_train  # Average loss per sample
     train_accuracy = correct_train / total_train * 100
 
+    # ----- Validation -----
     model.eval()
     correct_val = 0
     total_val = 0
@@ -233,19 +243,17 @@ for epoch in range(num_epochs):
             x_val, y_val = x_val.to(device), y_val.to(device)
             logits = model(x_val)
             predictions = torch.argmax(logits, dim=1)
-            predictions.to(device)
-            y_val.to(device)
             correct_val += (predictions == y_val).sum().item()
             total_val += y_val.size(0)
 
     val_accuracy = correct_val / total_val * 100
 
     print(f"Epoch {epoch + 1}: Loss = {epoch_loss:.4f}, Training Accuracy = {train_accuracy:.2f}%, Validation Accuracy = {val_accuracy:.2f}%")
-    
     if val_accuracy > best_accuracy:
         best_accuracy = val_accuracy
 
 print(f"Best Validation Accuracy: {best_accuracy:.2f}%")
+
 
 # Test accuracy
 correct_test = 0
